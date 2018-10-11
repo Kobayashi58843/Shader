@@ -1,5 +1,7 @@
 #include "OverScene.h"
 
+#include "Singleton.h"
+
 const float g_fCursorAnimationWaitTime = 0.2f;
 
 OverScene::OverScene(SceneNeedPointer PointerGroup)
@@ -20,10 +22,10 @@ OverScene::~OverScene()
 	m_vpSprite.shrink_to_fit();
 
 	//全サウンドを停止する.
-	SoundManager::GetInstance()->StopSound();
+	Singleton<SoundManager>::GetInstance()->StopSound();
 
 	//シーン移動時のSE.
-	SoundManager::GetInstance()->PlaySE(SoundManager::enSE_PushButton);
+	Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_PushButton);
 }
 
 //作成.
@@ -37,13 +39,13 @@ void OverScene::CreateProduct(const enSwitchToNextScene enNextScene)
 void OverScene::UpdateProduct(enSwitchToNextScene &enNextScene)
 {
 	//BGMをループで再生.
-	SoundManager::GetInstance()->PlayBGM(SoundManager::enBGM_Over);
+	Singleton<SoundManager>::GetInstance()->PlayBGM(SoundManager::enBGM_Over);
 
 	//スプライト更新.
 	UpdateSprite();
 
 	//左クリックされた時.
-	if (RawInput::GetInstance()->IsLButtonDown())
+	if (Singleton<RawInput>::GetInstance()->IsLButtonDown())
 	{
 		//カーソルがボタンの上にあるか.
 		if (IsHittingOfSprite(enSprite_Cursor, enSprite_ReturnButton))
@@ -215,7 +217,7 @@ void OverScene::UpdateSpriteAnimation(int iSpriteNo)
 				int iPatternNo = (int)m_vpSprite[iSpriteNo]->GetPatternNo().x;
 				if (iPatternNo % 2 == 0)
 				{
-					SoundManager::GetInstance()->PlaySE(SoundManager::enSE_Cursor);
+					Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_Cursor);
 				}
 			}
 		}

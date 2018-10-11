@@ -51,11 +51,7 @@ public:
 		enSE_Max,
 	};
 
-	static SoundManager* GetInstance()
-	{
-		static SoundManager s_Instance;
-		return &s_Instance;
-	}
+	SoundManager();
 	~SoundManager();
 
 	//サウンドをロードする.
@@ -94,10 +90,6 @@ public:
 	void StopSound();
 
 private:
-	SoundManager();
-	SoundManager(const SoundManager& rhs);
-	SoundManager& operator = (const SoundManager& rhs);
-
 	Sound* m_pBGM[enBGM_Max];
 	Sound* m_pSE[enSE_Max][g_iDuplicableMax];
 

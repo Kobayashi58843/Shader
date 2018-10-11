@@ -1,5 +1,7 @@
 #include "TitleScene.h"
 
+#include "Singleton.h"
+
 const float g_fCursorAnimationWaitTime = 0.2f;
 
 TitleScene::TitleScene(SceneNeedPointer PointerGroup)
@@ -20,10 +22,10 @@ TitleScene::~TitleScene()
 	m_vpSprite.shrink_to_fit();
 
 	//全サウンドを停止する.
-	SoundManager::GetInstance()->StopSound();
+	Singleton<SoundManager>::GetInstance()->StopSound();
 
 	//シーン移動時のSE.
-	SoundManager::GetInstance()->PlaySE(SoundManager::enSE_PushButton);
+	Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_PushButton);
 }
 
 //作成.
@@ -37,7 +39,7 @@ void TitleScene::CreateProduct(const enSwitchToNextScene enNextScene)
 void TitleScene::UpdateProduct(enSwitchToNextScene &enNextScene)
 {
 	//BGMをループで再生.
-	SoundManager::GetInstance()->PlayBGM(SoundManager::enBGM_Title);
+	Singleton<SoundManager>::GetInstance()->PlayBGM(SoundManager::enBGM_Title);
 
 	//スプライト更新.
 	UpdateSprite();
@@ -241,7 +243,7 @@ void TitleScene::UpdateSpriteAnimation(int iSpriteNo)
 				int iPatternNo = (int)m_vpSprite[iSpriteNo]->GetPatternNo().x;
 				if (iPatternNo % 2 == 0)
 				{
-					SoundManager::GetInstance()->PlaySE(SoundManager::enSE_Cursor);
+					Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_Cursor);
 				}
 			}
 		}
@@ -259,7 +261,7 @@ void TitleScene::UpdateSpriteAnimation(int iSpriteNo)
 void TitleScene::ChangeScene(enSwitchToNextScene &enNextScene)
 {
 	//左クリックされた時.
-	if (RawInput::GetInstance()->IsLButtonDown())
+	if (Singleton<RawInput>::GetInstance()->IsLButtonDown())
 	{
 		//カーソルがスタートボタンの上にあるか.
 		if (IsHittingOfSprite(enSprite_Cursor, enSprite_StartButton))
@@ -285,7 +287,7 @@ void TitleScene::RenderDebugText()
 	sprintf_s(cStrDbgTxt, "Scene : Title");
 	m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 0));
 
-	if (RawInput::GetInstance()->IsLButtonDown())
+	if (Singleton<RawInput>::GetInstance()->IsLButtonDown())
 	{
 		sprintf_s(cStrDbgTxt, "IsLButtonDown : true");
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 1));
@@ -296,7 +298,7 @@ void TitleScene::RenderDebugText()
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 1));
 	}
 	
-	if (RawInput::GetInstance()->IsRButtonDown())
+	if (Singleton<RawInput>::GetInstance()->IsRButtonDown())
 	{
 		sprintf_s(cStrDbgTxt, "IsRButtonDown : true");
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 2));

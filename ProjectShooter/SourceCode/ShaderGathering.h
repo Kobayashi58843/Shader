@@ -9,11 +9,7 @@
 class ShaderGathering
 {
 public:
-	static ShaderGathering* GetInstance()
-	{
-		static ShaderGathering s_Instance;
-		return &s_Instance;
-	}
+	ShaderGathering();
 	~ShaderGathering();
 
 	//指定したシェーダのポインタが入った構造体を返す.
@@ -32,10 +28,6 @@ public:
 	void InitShader(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext);
 
 private:
-	ShaderGathering();
-	ShaderGathering(const ShaderGathering& rhs);
-	ShaderGathering& operator = (const ShaderGathering& rhs);
-
 	//Dx11.
 	ID3D11Device*			m_pDevice11;		//デバイスオブジェクト.
 	ID3D11DeviceContext*	m_pDeviceContext11;	//デバイスコンテキスト.

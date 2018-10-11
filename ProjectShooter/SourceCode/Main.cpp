@@ -3,6 +3,8 @@
 #include "MyMacro.h"
 #include <stdio.h>
 
+#include "Singleton.h"
+
 //グローバル変数.
 Main*	g_pClsMain = nullptr;
 
@@ -32,8 +34,13 @@ INT WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,PSTR lpCmdLine,IN
 	}
 
 #endif //#if _DEBUG.
-	//終了.
-	delete g_pClsMain;//メインクラスの破棄.
+
+	/*====/ 終了 /====*/
+	//シングルトンクラスの破棄.
+	SingletonFinalizer::Finalize();
+
+	//メインクラスの破棄.
+	delete g_pClsMain;
 
 	//メモリリークのダンプの表示.
 	_CrtDumpMemoryLeaks();

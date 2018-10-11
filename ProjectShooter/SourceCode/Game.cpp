@@ -4,6 +4,8 @@
 #include "CEffects.h"
 #include "Resource.h"
 
+#include "Singleton.h"
+
 //ゲーム開始時のシーン.
 const enSwitchToNextScene g_StartStateOfScene = enSwitchToNextScene::Title;
 
@@ -20,21 +22,20 @@ Game::Game(const HWND hWnd)
 	m_pScene = nullptr;
 
 	//シェーダの作成.
-	ShaderGathering::GetInstance()->InitShader(m_pDevice, m_pDeviceContext);
+	Singleton<ShaderGathering>::GetInstance()->InitShader(m_pDevice, m_pDeviceContext);
 
 	//リソースの作成.
-	Resource::GetInstance()->CreateStaticModelResouce(hWnd, m_pDevice, m_pDeviceContext);
-	Resource::GetInstance()->CreateSkinModelResouce(hWnd, m_pDevice, m_pDeviceContext);
+	Singleton<Resource>::GetInstance()->Create(hWnd, m_pDevice, m_pDeviceContext);
 
 	//BGMとSEを作成.
-	SoundManager::GetInstance()->LoadSound(hWnd);
+	Singleton<SoundManager>::GetInstance()->LoadSound(hWnd);
 
 	//エフェクトの作成.
 	clsEffects::GetInstance()->Create(m_pDevice, m_pDeviceContext);
 	clsEffects::GetInstance()->LoadData();
 
 	//RawInput初期化.
-	RawInput::GetInstance()->InitRawInput(hWnd);
+	Singleton<RawInput>::GetInstance()->InitRawInput(hWnd);
 
 	//シーンに必要なポインタをセット.
 	m_SceneNeedPointer.SetSceneNeedPointer(hWnd, m_pDevice, m_pDeviceContext);
@@ -63,11 +64,10 @@ Game::Game(const HWND hWnd)
 
 Game::~Game()
 {
-
-
 	SAFE_DELETE(m_pFadeSprite);
 
 	SAFE_DELETE(m_pScene);
+
 	SAFE_DELETE(m_pDirect3D);
 
 	m_pDeviceContext = nullptr;
@@ -92,7 +92,7 @@ void Game::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 
-	RawInput::GetInstance()->MsgProc(uMsg, lParam);
+	Singleton<RawInput>::GetInstance()->MsgProc(uMsg, lParam);
 }
 
 //更新.
@@ -110,7 +110,7 @@ void Game::Update()
 	Render();
 
 	//マウスの入力情報をクリア.
-	RawInput::GetInstance()->ClearPerFrame();
+	Singleton<RawInput>::GetInstance()->ClearPerFrame();
 }
 
 //フェード.

@@ -1,6 +1,8 @@
 #include "BulletManager.h"
 #include "RawInput.h"
 
+#include "Singleton.h"
+
 //’e‚Ì“–‚½‚è”»’è‚Ì‘å‚«‚³.
 const float g_fBulletRadius = 0.5f;
 
@@ -84,7 +86,7 @@ void BulletManager::CollisionJudgmentBullet(const SPHERE TargetSphere, clsDX9Mes
 //’e‚Ì”­ŽË.
 bool BulletManager::IsShot()
 {
-	if (!RawInput::GetInstance()->IsLButtonDown())
+	if (!Singleton<RawInput>::GetInstance()->IsLButtonDown())
 	{
 		return false;
 	}

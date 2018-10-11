@@ -2,6 +2,8 @@
 
 #include "SoundManager.h"
 
+#include "Singleton.h"
+
 const float g_fScale = 0.08f;
 
 //モデルの向きの調整.
@@ -86,7 +88,7 @@ void Enemy::HitToSphere()
 	}
 	else if (m_Action == enAction::Attack || m_Action == enAction::Hit)
 	{
-		SoundManager::GetInstance()->PlaySE(SoundManager::enSE_EnemyGuard);
+		Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_EnemyGuard);
 	}
 }
 
@@ -208,8 +210,8 @@ void Enemy::SetAction(const enAction Action)
 
 		{
 			const int iAttackVolume = 400;
-			SoundManager::GetInstance()->PlaySE(SoundManager::enSE_EnemyAttack, iAttackVolume);
-			SoundManager::GetInstance()->PlaySE(SoundManager::enSE_EnemyAttackVoice);
+			Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_EnemyAttack, iAttackVolume);
+			Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_EnemyAttackVoice);
 		}
 
 		break;
@@ -222,8 +224,8 @@ void Enemy::SetAction(const enAction Action)
 		}
 
 		//SEを再生.
-		SoundManager::GetInstance()->PlaySE(SoundManager::enSE_EnemyDamage);
-		SoundManager::GetInstance()->PlaySE(SoundManager::enSE_EnemyDamageVoice);
+		Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_EnemyDamage);
+		Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_EnemyDamageVoice);
 
 		//エフェクトを再生.
 		m_HitHandle = m_pEffect->Play(vEffectPos, clsEffects::enEfcType_PlayerHit);
@@ -241,8 +243,8 @@ void Enemy::SetAction(const enAction Action)
 		}
 
 		//SEを再生.
-		SoundManager::GetInstance()->PlaySE(SoundManager::enSE_EnemyDead);
-		SoundManager::GetInstance()->PlaySE(SoundManager::enSE_EnemyDeadVoice);
+		Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_EnemyDead);
+		Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_EnemyDeadVoice);
 
 		//エフェクトを再生.
 		m_DeadHandle = m_pEffect->Play(vEffectPos, clsEffects::enEfcType_EnemyDead);

@@ -6,11 +6,7 @@
 class RawInput
 {
 public:
-	static RawInput* GetInstance()
-	{
-		static RawInput s_Instance;
-		return &s_Instance;
-	}
+	RawInput();
 	~RawInput();
 
 	//RawInput‰Šú‰».
@@ -86,10 +82,6 @@ public:
 
 
 private:
-	RawInput();
-	RawInput(const RawInput& rhs);
-	RawInput& operator = (const RawInput& rhs);
-
 	//ƒ}ƒEƒX‚ÌˆÚ“®—Ê.
 	D3DXVECTOR2 m_vMouseMovingDistance;
 

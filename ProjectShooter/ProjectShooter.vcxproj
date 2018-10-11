@@ -22,6 +22,7 @@
     <ClCompile Include="SourceCode\Bullet.cpp" />
     <ClCompile Include="SourceCode\BulletManager.cpp" />
     <ClCompile Include="SourceCode\ShaderGathering.cpp" />
+    <ClCompile Include="SourceCode\Singleton.cpp" />
     <ClCompile Include="SourceCode\SoundManager.cpp" />
     <ClCompile Include="SourceCode\Sprite.cpp" />
     <ClCompile Include="SourceCode\CD3DXSKINMESH.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="SourceCode\ShaderEnumeration.h" />
     <ClInclude Include="SourceCode\ShaderGathering.h" />
     <ClInclude Include="SourceCode\ShaderStructure.h" />
+    <ClInclude Include="SourceCode\Singleton.h" />
     <ClInclude Include="SourceCode\SoundManager.h" />
     <ClInclude Include="SourceCode\Sprite.h" />
     <ClInclude Include="SourceCode\CD3DXSKINMESH.h" />
