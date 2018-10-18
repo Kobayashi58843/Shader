@@ -102,7 +102,7 @@ public:
 		m_pManager->StopEffect(handle);
 	}
 	//‘S‚Ä’âŽ~.
-	void StopAll(::Effekseer::Handle handle)
+	void StopAll()
 	{
 		m_pManager->StopAllEffects();
 	}

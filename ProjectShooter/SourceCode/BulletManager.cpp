@@ -86,7 +86,7 @@ void BulletManager::CollisionJudgmentBullet(const SPHERE TargetSphere, clsDX9Mes
 //’e‚Ì”­ŽË.
 bool BulletManager::IsShot()
 {
-	if (!Singleton<RawInput>::GetInstance()->IsLButtonDown())
+	if (!Singleton<RawInput>().GetInstance().IsLButtonDown())
 	{
 		return false;
 	}

@@ -36,14 +36,11 @@ INT WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,PSTR lpCmdLine,IN
 #endif //#if _DEBUG.
 
 	/*====/ 終了 /====*/
-	//シングルトンクラスの破棄.
-	SingletonFinalizer::Finalize();
-
 	//メインクラスの破棄.
 	delete g_pClsMain;
 
-	//メモリリークのダンプの表示.
-	_CrtDumpMemoryLeaks();
+	//シングルトンクラスの破棄.
+	SingletonFinalizer::Finalize();
 	
 	return 0;
 }

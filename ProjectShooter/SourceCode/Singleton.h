@@ -24,12 +24,12 @@ template <typename T>
 class Singleton final
 {
 public:
-	static T* GetInstance()
+	static T& GetInstance()
 	{
 		//1度だけ「Create」関数を呼び出す.
-		std::call_once(InitFlag, Create);
-		assert(pInstance);
-		return pInstance;
+		std::call_once(m_InitFlag, Create);
+		assert(m_pInstance);
+		return *m_pInstance;
 	}
 
 private:
@@ -37,7 +37,7 @@ private:
 	static void Create()
 	{
 		//クラスを作成.
-		pInstance = new T;
+		m_pInstance = new T;
 
 		//破棄用の関数を登録.
 		SingletonFinalizer::AddFinalizer(&Singleton<T>::Destroy);
@@ -46,15 +46,14 @@ private:
 	//破棄用の関数を登録.
 	static void Destroy()
 	{
-		SAFE_DELETE(pInstance);
+		SAFE_DELETE(m_pInstance);
 	}
 
 	//coll_once()関数のためのフラグ.
-	static std::once_flag InitFlag;
+	static std::once_flag m_InitFlag;
 	//インスタンス.
-	static T* pInstance;
+	static T* m_pInstance;
 };
 
-//シングルトンクラスの変数の定義.
-template <typename T> std::once_flag Singleton<T>::InitFlag;
-template <typename T> T* Singleton<T>::pInstance = nullptr;
+template <typename T> std::once_flag Singleton<T>::m_InitFlag;
+template <typename T> T* Singleton<T>::m_pInstance = nullptr;

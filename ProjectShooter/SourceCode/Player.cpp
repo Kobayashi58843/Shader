@@ -65,9 +65,7 @@ Player::~Player()
 {
 	DetatchModel();
 
-	m_pEffect->StopAll(m_HitHandle);
-	m_pEffect->StopAll(m_DeadHandle);
-	m_pEffect->StopAll(m_WallHitHandle);
+	m_pEffect->StopAll();
 }
 
 //レイとメッシュの衝突時.
@@ -197,8 +195,8 @@ void Player::SetAction(const enAction Action)
 		ChangeAnimation(7);
 
 		//SEを再生.
-		Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_PlayerAttack);
-		Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_PlayerAttackVoice);
+		Singleton<SoundManager>().GetInstance().PlaySE(SoundManager::enSE_PlayerAttack);
+		Singleton<SoundManager>().GetInstance().PlaySE(SoundManager::enSE_PlayerAttackVoice);
 
 		break;
 	case enAction::Hit:
@@ -212,8 +210,8 @@ void Player::SetAction(const enAction Action)
 		m_State.iHp--;
 
 		//SEを再生.
-		Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_PlayerDamage);
-		Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_PlayerDamageVoice);
+		Singleton<SoundManager>().GetInstance().PlaySE(SoundManager::enSE_PlayerDamage);
+		Singleton<SoundManager>().GetInstance().PlaySE(SoundManager::enSE_PlayerDamageVoice);
 
 		//エフェクトを再生.
 		m_HitHandle = m_pEffect->Play(vEffectPos, clsEffects::enEfcType_PlayerHit);
@@ -231,8 +229,8 @@ void Player::SetAction(const enAction Action)
 		}
 
 		//SEを再生.
-		Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_PlayerDead);
-		Singleton<SoundManager>::GetInstance()->PlaySE(SoundManager::enSE_PlayerDeadVoice);
+		Singleton<SoundManager>().GetInstance().PlaySE(SoundManager::enSE_PlayerDead);
+		Singleton<SoundManager>().GetInstance().PlaySE(SoundManager::enSE_PlayerDeadVoice);
 		
 		//エフェクトを再生.
 		m_DeadHandle = m_pEffect->Play(vEffectPos, clsEffects::enEfcType_PlayerDead);
@@ -304,10 +302,10 @@ void Player::MoveLimit()
 	{
 		m_vPos = m_vOldPos;
 
-		if (Singleton<SoundManager>::GetInstance()->IsStoppedFirstSE(SoundManager::enSE_PlayerMoveLimit))
+		if (Singleton<SoundManager>().GetInstance().IsStoppedFirstSE(SoundManager::enSE_PlayerMoveLimit))
 		{
 			//SEを再生.
-			Singleton<SoundManager>::GetInstance()->PlayFirstSE(SoundManager::enSE_PlayerMoveLimit);
+			Singleton<SoundManager>().GetInstance().PlayFirstSE(SoundManager::enSE_PlayerMoveLimit);
 
 			//エフェクトを再生.
 			m_WallHitHandle = m_pEffect->Play(m_vPos, clsEffects::enEfcType_PlayerWallHit);

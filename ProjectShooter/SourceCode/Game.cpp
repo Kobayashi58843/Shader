@@ -22,20 +22,20 @@ Game::Game(const HWND hWnd)
 	m_pScene = nullptr;
 
 	//シェーダの作成.
-	Singleton<ShaderGathering>::GetInstance()->InitShader(m_pDevice, m_pDeviceContext);
+	Singleton<ShaderGathering>().GetInstance().InitShader(m_pDevice, m_pDeviceContext);
 
 	//リソースの作成.
-	Singleton<Resource>::GetInstance()->Create(hWnd, m_pDevice, m_pDeviceContext);
+	Singleton<Resource>().GetInstance().Create(hWnd, m_pDevice, m_pDeviceContext);
 
 	//BGMとSEを作成.
-	Singleton<SoundManager>::GetInstance()->LoadSound(hWnd);
+	Singleton<SoundManager>().GetInstance().LoadSound(hWnd);
 
 	//エフェクトの作成.
 	clsEffects::GetInstance()->Create(m_pDevice, m_pDeviceContext);
 	clsEffects::GetInstance()->LoadData();
 
 	//RawInput初期化.
-	Singleton<RawInput>::GetInstance()->InitRawInput(hWnd);
+	Singleton<RawInput>().GetInstance().InitRawInput(hWnd);
 
 	//シーンに必要なポインタをセット.
 	m_SceneNeedPointer.SetSceneNeedPointer(hWnd, m_pDevice, m_pDeviceContext);
@@ -68,6 +68,8 @@ Game::~Game()
 
 	SAFE_DELETE(m_pScene);
 
+	clsEffects::GetInstance()->Destroy();
+
 	SAFE_DELETE(m_pDirect3D);
 
 	m_pDeviceContext = nullptr;
@@ -92,7 +94,7 @@ void Game::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 
-	Singleton<RawInput>::GetInstance()->MsgProc(uMsg, lParam);
+	Singleton<RawInput>().GetInstance().MsgProc(uMsg, lParam);
 }
 
 //更新.
@@ -110,7 +112,7 @@ void Game::Update()
 	Render();
 
 	//マウスの入力情報をクリア.
-	Singleton<RawInput>::GetInstance()->ClearPerFrame();
+	Singleton<RawInput>().GetInstance().ClearPerFrame();
 }
 
 //フェード.

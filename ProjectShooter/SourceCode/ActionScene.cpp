@@ -15,6 +15,12 @@ ActionScene::ActionScene(SceneNeedPointer PointerGroup)
 	m_pBulletManager = nullptr;
 
 	m_fOldCameraDistance = 0.0f;
+
+	//全サウンドを停止する.
+	Singleton<SoundManager>().GetInstance().StopSound();
+
+	//シーン移動時のSE.
+	Singleton<SoundManager>().GetInstance().PlaySE(SoundManager::enSE_PushButton);
 }
 
 ActionScene::~ActionScene()
@@ -37,9 +43,6 @@ ActionScene::~ActionScene()
 	m_vpSprite.clear();
 	//キャパシティを現在のサイズにあわせる.
 	m_vpSprite.shrink_to_fit();
-
-	//全サウンドを停止する.
-	Singleton<SoundManager>::GetInstance()->StopSound();
 }
 
 //作成.
@@ -52,11 +55,11 @@ void ActionScene::CreateProduct(const enSwitchToNextScene enNextScene)
 
 	m_pBulletManager = new BulletManager;
 
-	m_pPlayer = new Player(Singleton<Resource>::GetInstance()->GetSkinModels(Resource::enSkinModel_Player), m_pBulletManager);
+	m_pPlayer = new Player(Singleton<Resource>().GetInstance().GetSkinModels(Resource::enSkinModel_Player), m_pBulletManager);
 
-	m_pEnemy = new Enemy(Singleton<Resource>::GetInstance()->GetSkinModels(Resource::enSkinModel_Enemy));
+	m_pEnemy = new Enemy(Singleton<Resource>().GetInstance().GetSkinModels(Resource::enSkinModel_Enemy));
 
-	m_pGround = Singleton<Resource>::GetInstance()->GetStaticModels(Resource::enStaticModel_Ground);
+	m_pGround = Singleton<Resource>().GetInstance().GetStaticModels(Resource::enStaticModel_Ground);
 }
 
 //更新.
@@ -70,7 +73,7 @@ void ActionScene::UpdateProduct(enSwitchToNextScene &enNextScene)
 #endif //#if _DEBUG.
 
 	//BGMをループで再生.
-	Singleton<SoundManager>::GetInstance()->PlayBGM(SoundManager::enBGM_Action);
+	Singleton<SoundManager>().GetInstance().PlayBGM(SoundManager::enBGM_Action);
 
 	//スプライト更新.
 	UpdateSprite();
@@ -136,7 +139,7 @@ void ActionScene::RenderModelProduct()
 //カメラの操作.
 void ActionScene::ControlCameraMove()
 {
-	D3DXVECTOR2 vMouseMovingDistance = Singleton<RawInput>::GetInstance()->GetMouseMovingDistance();
+	D3DXVECTOR2 vMouseMovingDistance = Singleton<RawInput>().GetInstance().GetMouseMovingDistance();
 
 	//マウスの移動速度で視点移動する速さを変える.
 	float fCameraMoveSpeed = fabs(g_fCameraMoveSpeed * (vMouseMovingDistance.x + vMouseMovingDistance.y));
@@ -164,19 +167,19 @@ void ActionScene::ControlCameraMove()
 	/*====/ カメラの距離 /====*/
 	//右クリック時現在の注視位置からカメラ位置までの距離を出す.
 	const float fDistance = D3DXVec3Length(&m_pCamera->GetFocusingSpacePos());
-	if (Singleton<RawInput>::GetInstance()->IsRButtonDown())
+	if (Singleton<RawInput>().GetInstance().IsRButtonDown())
 	{
 		//現在の距離を覚えておく.
 		m_fOldCameraDistance = fDistance;
 	}
-	else if (Singleton<RawInput>::GetInstance()->IsRButtonUp())
+	else if (Singleton<RawInput>().GetInstance().IsRButtonUp())
 	{
 		//元の距離に戻す.
 		m_pCamera->SetOffsetZ(-(m_fOldCameraDistance - 1.0f));
 	}
 	
 	//右クリックをしている間はカメラを注視位置に近づける.
-	if (Singleton<RawInput>::GetInstance()->IsRButtonHoldDown())
+	if (Singleton<RawInput>().GetInstance().IsRButtonHoldDown())
 	{
 		if (fDistance > 1.0f)
 		{
@@ -186,11 +189,11 @@ void ActionScene::ControlCameraMove()
 	else
 	{
 		//マウスホイール時.
-		if (Singleton<RawInput>::GetInstance()->IsWheelForward())
+		if (Singleton<RawInput>().GetInstance().IsWheelForward())
 		{
 			m_pCamera->SetOffsetZ(1.0f);
 		}
-		else if (Singleton<RawInput>::GetInstance()->IsWheelBackward())
+		else if (Singleton<RawInput>().GetInstance().IsWheelBackward())
 		{
 			m_pCamera->SetOffsetZ(-1.0f);
 		}
@@ -356,12 +359,12 @@ void ActionScene::RenderDebugText()
 	m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 0));
 
 	sprintf_s(cStrDbgTxt, "MouseMoveDis : X[%f] , Y[%f]",
-		Singleton<RawInput>::GetInstance()->GetMouseMovingDistance().x,
-		Singleton<RawInput>::GetInstance()->GetMouseMovingDistance().y);
+		Singleton<RawInput>().GetInstance().GetMouseMovingDistance().x,
+		Singleton<RawInput>().GetInstance().GetMouseMovingDistance().y);
 
 	m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 1));
 
-	if (Singleton<RawInput>::GetInstance()->IsLButtonDown())
+	if (Singleton<RawInput>().GetInstance().IsLButtonDown())
 	{
 		sprintf_s(cStrDbgTxt, "IsLButtonDown : true");
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 2));
@@ -372,7 +375,7 @@ void ActionScene::RenderDebugText()
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 2));
 	}
 
-	if (Singleton<RawInput>::GetInstance()->IsLButtonHoldDown())
+	if (Singleton<RawInput>().GetInstance().IsLButtonHoldDown())
 	{
 		sprintf_s(cStrDbgTxt, "IsLButtonHoldDown : true");
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 3));
@@ -383,7 +386,7 @@ void ActionScene::RenderDebugText()
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 3));
 	}
 
-	if (Singleton<RawInput>::GetInstance()->IsRButtonDown())
+	if (Singleton<RawInput>().GetInstance().IsRButtonDown())
 	{
 		sprintf_s(cStrDbgTxt, "IsRButtonDown : true");
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 4));
@@ -394,7 +397,7 @@ void ActionScene::RenderDebugText()
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 4));
 	}
 
-	if (Singleton<RawInput>::GetInstance()->IsRButtonHoldDown())
+	if (Singleton<RawInput>().GetInstance().IsRButtonHoldDown())
 	{
 		sprintf_s(cStrDbgTxt, "IsRButtonHoldDown : true");
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 5));
@@ -405,7 +408,7 @@ void ActionScene::RenderDebugText()
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 5));
 	}
 
-	if (Singleton<RawInput>::GetInstance()->IsWheelForward())
+	if (Singleton<RawInput>().GetInstance().IsWheelForward())
 	{
 		sprintf_s(cStrDbgTxt, "IsWheelForward : true");
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 6));
@@ -416,7 +419,7 @@ void ActionScene::RenderDebugText()
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 6));
 	}
 
-	if (Singleton<RawInput>::GetInstance()->IsWheelBackward())
+	if (Singleton<RawInput>().GetInstance().IsWheelBackward())
 	{
 		sprintf_s(cStrDbgTxt, "IsWheelBackward : true");
 		m_pDebugText->Render(cStrDbgTxt, 0, 50 + (50 * 7));

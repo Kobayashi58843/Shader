@@ -4,7 +4,7 @@
 #include "Sound.h"
 
 //d•¡‚µ‚ÄÄ¶‚Å‚«‚éÅ‘å.
-const int g_iDuplicableMax = 4;
+const int g_iDuplicableMax = 2;
 
 //BGM‚Ì‰¹—Ê.
 const int b_iBGMVolume = 600;
