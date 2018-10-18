@@ -15,7 +15,7 @@ Sound::Sound()
 //デストラクタ.
 Sound::~Sound()
 {
-	Close();
+	//Close();
 
 	for (unsigned int i = 0; i < STR_BUFF_MAX; i++)
 	{

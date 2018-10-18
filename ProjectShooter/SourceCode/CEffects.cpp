@@ -41,7 +41,7 @@ clsEffects::clsEffects()
 //================================================
 clsEffects::~clsEffects()
 {
-	Destroy();
+	//Destroy();
 }
 
 //構築関数.
@@ -92,8 +92,7 @@ HRESULT clsEffects::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 //破棄関数.
 HRESULT clsEffects::Destroy()
 {
-	//エフェクトデータを解放.
-	ReleaseData();
+	StopAll();
 
 	//先にエフェクト管理用インスタンスを破棄.
 	m_pManager->Destroy();
@@ -111,6 +110,9 @@ HRESULT clsEffects::Destroy()
 		m_pXA2Master = NULL;
 	}
 	ES_SAFE_RELEASE(m_pXA2);
+
+	//エフェクトデータを解放.
+	ReleaseData();
 
 	return S_OK;
 }

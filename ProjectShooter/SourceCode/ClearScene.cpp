@@ -1,11 +1,16 @@
 #include "ClearScene.h"
 
+#include "Singleton.h"
+
 const float g_fCursorAnimationWaitTime = 0.2f;
 
 ClearScene::ClearScene(SceneNeedPointer PointerGroup)
 	: BaseScene(PointerGroup)
 {
 	m_iCursorAnimationCount = 0;
+
+	//全サウンドを停止する.
+	Singleton<SoundManager>().GetInstance().StopSound();
 }
 
 ClearScene::~ClearScene()
@@ -18,12 +23,6 @@ ClearScene::~ClearScene()
 	m_vpSprite.clear();
 	//キャパシティを現在のサイズにあわせる.
 	m_vpSprite.shrink_to_fit();
-
-	//全サウンドを停止する.
-	SoundManager::GetInstance()->StopSound();
-
-	//シーン移動時のSE.
-	SoundManager::GetInstance()->PlaySE(SoundManager::enSE_PushButton);
 }
 
 //作成.
@@ -37,13 +36,13 @@ void ClearScene::CreateProduct(const enSwitchToNextScene enNextScene)
 void ClearScene::UpdateProduct(enSwitchToNextScene &enNextScene)
 {
 	//BGMをループで再生.
-	SoundManager::GetInstance()->PlayBGM(SoundManager::enBGM_Clear);
+	Singleton<SoundManager>().GetInstance().PlayBGM(SoundManager::enBGM_Clear);
 
 	//スプライト更新.
 	UpdateSprite();
 
 	//左クリックされた時.
-	if (RawInput::GetInstance()->IsLButtonDown())
+	if (Singleton<RawInput>().GetInstance().IsLButtonDown())
 	{
 		//カーソルがボタンの上にあるか.
 		if (IsHittingOfSprite(enSprite_Cursor, enSprite_ReturnButton))
@@ -215,7 +214,7 @@ void ClearScene::UpdateSpriteAnimation(int iSpriteNo)
 				int iPatternNo = (int)m_vpSprite[iSpriteNo]->GetPatternNo().x;
 				if (iPatternNo % 2 == 0)
 				{
-					SoundManager::GetInstance()->PlaySE(SoundManager::enSE_Cursor);
+					Singleton<SoundManager>().GetInstance().PlaySE(SoundManager::enSE_Cursor);
 				}
 			}
 		}

@@ -11,6 +11,10 @@ Resource::Resource()
 	si.pDevice = nullptr;
 	si.pDeviceContext = nullptr;
 
+	si.hWnd = nullptr;
+	si.pDevice = nullptr;
+	si.pDeviceContext = nullptr;
+
 	m_ppStaticModels = nullptr;
 	m_ppSkinModels = nullptr;
 }
@@ -45,7 +49,28 @@ Resource::~Resource()
 	m_hWnd = nullptr;
 }
 
+void Resource::Create(const HWND hWnd, ID3D11Device* const pDevice, ID3D11DeviceContext* const pContext)
+{
+	m_hWnd = hWnd;
+	m_pDevice11 = pDevice;
+	m_pContext11 = pContext;
+
+	si.hWnd = hWnd;
+	si.pDevice = pDevice;
+	si.pDeviceContext = pContext;
+
+	CreateStaticModelResouce(m_hWnd, m_pDevice11, m_pContext11);
+	CreateSkinModelResouce(m_hWnd, m_pDevice11, m_pContext11);
+}
+
 /*/========================================/ スタティックモデル /========================================/*/
+void Resource::CreateStaticModelResouce(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	InitStaticModel(hWnd, pDevice, pContext);
+	CreateStaticModel("Data\\Ground\\Stage.X", enStaticModel_Ground);
+	CreateStaticModel("Data\\Collision\\Sphere.X", enStaticModel_Shpere);
+}
+
 HRESULT Resource::InitStaticModel(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	m_hWnd = hWnd;
@@ -123,13 +148,6 @@ clsDX9Mesh* Resource::GetStaticModels(enStaticModel enModel)
 	return m_ppStaticModels[enModel];
 }
 
-void Resource::CreateStaticModelResouce(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-{
-	InitStaticModel(hWnd, pDevice, pContext);
-	CreateStaticModel("Data\\Ground\\Stage.X", enStaticModel_Ground);
-	CreateStaticModel("Data\\Collision\\Sphere.X", enStaticModel_Shpere);
-}
-
 //範囲内かどうかチェックする : 範囲内に収まってたらtrue.
 bool Resource::IsRengeStaticModel(enStaticModel enModel)
 {
@@ -141,6 +159,12 @@ bool Resource::IsRengeStaticModel(enStaticModel enModel)
 }
 
 /*/=========================================/ スキンモデル /=========================================/*/
+void Resource::CreateSkinModelResouce(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	InitSkinModel(hWnd, pDevice, pContext);
+	CreateSkinModel("Data\\Player\\Bozu.x", enSkinModel_Player);
+	CreateSkinModel("Data\\Enemy\\Josin01.x", enSkinModel_Enemy);
+}
 
 HRESULT Resource::InitSkinModel(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
@@ -218,13 +242,6 @@ clsD3DXSKINMESH* Resource::GetSkinModels(enSkinModel enModel)
 
 	//モデルのポインタを返す.
 	return m_ppSkinModels[enModel];
-}
-
-void Resource::CreateSkinModelResouce(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-{
-	InitSkinModel(hWnd, pDevice, pContext);
-	CreateSkinModel("Data\\Player\\Bozu.x", enSkinModel_Player);
-	CreateSkinModel("Data\\Enemy\\Josin01.x", enSkinModel_Enemy);
 }
 
 //範囲内かどうかチェックする : 範囲内に収まってたらtrue.

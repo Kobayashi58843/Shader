@@ -22,21 +22,21 @@ SoundManager::SoundManager()
 
 SoundManager::~SoundManager()
 {
-	for (int i = 0; i < enBGM::enBGM_Max; i++)
-	{
-		m_pBGM[i]->Close();
-		SAFE_DELETE(m_pBGM[i]);
-	}
-
 	//‰¹‚Ìí—Ş‚Ì”.
-	for (int i = 0; i < enSE::enSE_Max; i++)
+	for (int i = enSE::enSE_Max - 1; i >= 0; i--)
 	{
 		//‰¹‚ğd‚Ë‚é”.
-		for (int j = 0; j < g_iDuplicableMax; j++)
+		for (int j = g_iDuplicableMax - 1; j >= 0; j--)
 		{
 			m_pSE[i][j]->Close();
 			SAFE_DELETE(m_pSE[i][j]);
 		}
+	}
+
+	for (int i = enBGM::enBGM_Max - 1; i >= 0; i--)
+	{
+		m_pBGM[i]->Close();
+		SAFE_DELETE(m_pBGM[i]);
 	}
 }
 

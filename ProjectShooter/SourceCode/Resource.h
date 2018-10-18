@@ -25,26 +25,18 @@ public:
 		enSkinModel_Max,
 	};
 
-	static Resource* GetInstance()
-	{
-		static Resource s_Instance;
-		return &s_Instance;
-	}
+	Resource();
 	~Resource();
+
+	void Create(const HWND hWnd, ID3D11Device* const pDevice, ID3D11DeviceContext* const pContext);
 
 	/*====/ スタティックモデル /====*/
 	clsDX9Mesh*	GetStaticModels(enStaticModel enModel);
-	void		CreateStaticModelResouce(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 
 	/*====/ スキンモデル /====*/
 	clsD3DXSKINMESH*	GetSkinModels(enSkinModel enModel);
-	void				CreateSkinModelResouce(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 
 private:
-	Resource();
-	Resource(const Resource& rhs);
-	Resource& operator = (const Resource& rhs);
-
 	HWND					m_hWnd;
 	ID3D11Device*			m_pDevice11;
 	ID3D11DeviceContext*	m_pContext11;
@@ -54,12 +46,14 @@ private:
 	clsD3DXSKINMESH**		m_ppSkinModels;
 
 	/*====/ スタティックモデル /====*/
+	void	CreateStaticModelResouce(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	HRESULT	InitStaticModel(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	HRESULT	CreateStaticModel(LPSTR fileName, enStaticModel enModel);
 	HRESULT	ReleaseStaticModel(enStaticModel enModel);
 	bool	IsRengeStaticModel(enStaticModel enModel);
 
 	/*====/ スキンモデル /====*/
+	void	CreateSkinModelResouce(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	HRESULT	InitSkinModel(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	HRESULT	CreateSkinModel(LPSTR fileName, enSkinModel enModel);
 	HRESULT	ReleaseSkinModel(enSkinModel enModel);

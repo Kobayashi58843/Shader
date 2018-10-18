@@ -1,5 +1,7 @@
 #include "DX9Mesh.h"
 
+#include "Singleton.h"
+
 //================================================
 //	コンストラクタ.
 //================================================
@@ -350,11 +352,11 @@ HRESULT clsDX9Mesh::LoadXMesh(LPSTR fileName)
 
 HRESULT clsDX9Mesh::InitShader()
 {
-	m_Shader = ShaderGathering::GetInstance()->GetStaticMeshShader(enStaticModelShader_Simple);
+	m_Shader = Singleton<ShaderGathering>().GetInstance().GetStaticMeshShader(enStaticModelShader_Simple);
 
-	m_pCBuffPerMesh = ShaderGathering::GetInstance()->GetStaticCBuffer(enStaticModelCBuffer_Mesh);
-	m_pCBuffPerMaterial = ShaderGathering::GetInstance()->GetStaticCBuffer(enStaticModelCBuffer_Material);
-	m_pCBuffPerFrame = ShaderGathering::GetInstance()->GetStaticCBuffer(enStaticModelCBuffer_Frame);
+	m_pCBuffPerMesh = Singleton<ShaderGathering>().GetInstance().GetStaticCBuffer(enStaticModelCBuffer_Mesh);
+	m_pCBuffPerMaterial = Singleton<ShaderGathering>().GetInstance().GetStaticCBuffer(enStaticModelCBuffer_Material);
+	m_pCBuffPerFrame = Singleton<ShaderGathering>().GetInstance().GetStaticCBuffer(enStaticModelCBuffer_Frame);
 
 	return S_OK;
 }

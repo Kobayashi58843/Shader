@@ -4,7 +4,7 @@
 #include "Sound.h"
 
 //重複して再生できる最大.
-const int g_iDuplicableMax = 4;
+const int g_iDuplicableMax = 2;
 
 //BGMの音量.
 const int b_iBGMVolume = 600;
@@ -51,11 +51,7 @@ public:
 		enSE_Max,
 	};
 
-	static SoundManager* GetInstance()
-	{
-		static SoundManager s_Instance;
-		return &s_Instance;
-	}
+	SoundManager();
 	~SoundManager();
 
 	//サウンドをロードする.
@@ -94,10 +90,6 @@ public:
 	void StopSound();
 
 private:
-	SoundManager();
-	SoundManager(const SoundManager& rhs);
-	SoundManager& operator = (const SoundManager& rhs);
-
 	Sound* m_pBGM[enBGM_Max];
 	Sound* m_pSE[enSE_Max][g_iDuplicableMax];
 

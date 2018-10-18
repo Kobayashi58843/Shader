@@ -1,5 +1,7 @@
 #include "Bullet.h"
 
+#include "Singleton.h"
+
 #include "SoundManager.h"
 #include "Resource.h"
 
@@ -15,7 +17,7 @@ const D3DXVECTOR3 g_vInitialPosition = { 0.0f, -100.0f, 0.0f };
 Bullet::Bullet(const float fCollisionRadius, const float fScale)
 {
 #if _DEBUG
-	m_pModel = Resource::GetInstance()->GetStaticModels(Resource::enStaticModel_Shpere);
+	m_pModel = Singleton<Resource>().GetInstance().GetStaticModels(Resource::enStaticModel_Shpere);
 #endif
 
 	m_bShotFlg = false;
@@ -47,8 +49,7 @@ Bullet::~Bullet()
 #if _DEBUG
 	m_pModel = nullptr;
 #endif
-	m_pEffect->StopAll(m_MissileHandle);
-	m_pEffect->StopAll(m_ExplosionHandle);
+	m_pEffect->StopAll();
 }
 
 //XV.
@@ -184,7 +185,7 @@ void Bullet::WhenBulletDisappearance()
 		iExplosionVolume = iMinExplosionVolume;
 	}
 
-	SoundManager::GetInstance()->PlaySE(SoundManager::enSE_Explosion, iExplosionVolume);
+	Singleton<SoundManager>().GetInstance().PlaySE(SoundManager::enSE_Explosion, iExplosionVolume);
 
 	m_pEffect->Stop(m_MissileHandle);
 	m_ExplosionHandle = m_pEffect->Play(m_vPos, clsEffects::enEfcType_Explosion);
